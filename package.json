@@ -1,0 +1,23 @@
+{
+  "name": "js-many-birds",
+  "version": "0.8.0",
+  "description": "Kill many (figurative) birds w/ one (literal) function invocation",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha --recursive ./test/unit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/briandamaged/js-many-birds.git"
+  },
+  "keywords": [
+    "promise",
+    "birds"
+  ],
+  "author": "Brian Lauber",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/briandamaged/js-many-birds/issues"
+  },
+  "homepage": "https://github.com/briandamaged/js-many-birds#readme"
+}
