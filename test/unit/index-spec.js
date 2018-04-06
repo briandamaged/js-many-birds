@@ -17,33 +17,43 @@ function delay(t = 5) {
 
 describe('Fulfiller', function() {
 
-  it('foo', async function() {
-    let x = 0;
-    const f = Fulfiller(async function() {
-      await delay();
-      return x++;
+  context('there is an unresolved Promise for a specific set of arguments', function() {
+
+    context('given the same set of arguments', function() {
+
+      it('returns the same unresolved Promise', async function() {
+        let x = 0;
+        const f = Fulfiller(async function() {
+          await delay();
+          return x++;
+        });
+
+        const p = [
+          f(),
+          f("foo"),
+          f("foo", "bar"),
+          f("foo"),
+          f(),
+        ];
+
+
+        expect(p[0]).to.equal(p[4]);
+        expect(p[0]).to.not.equal(p[1]);
+        expect(p[0]).to.not.equal(p[2]);
+
+        expect(p[1]).to.equal(p[3]);
+        expect(p[1]).to.not.equal(p[2]);
+
+        const r = await Promise.all(p);
+
+        expect(r).to.deep.equal([0, 1, 2, 1, 0]);
+      });
+
     });
 
-    const a = await Promise.all([
-      f(), f(), f(),
-    ]);
-
-    expect(a).to.deep.equal([0, 0, 0]);
-
-
-    const b = await Promise.all([
-      f(), f(), f(),
-    ]);
-
-    expect(b).to.deep.equal([1, 1, 1]);
-
-
-    const c = await Promise.all([
-      f("foo"), f("bar"), f("foo"), f("quuz"), f("bar"), f("foo", "bar"),
-    ]);
-
-    expect(c).to.deep.equal([2, 3, 2, 4, 3, 5]);
   });
+
+
 
 
 
