@@ -6,13 +6,6 @@ const {
 } = require('../../src/index');
 
 
-function delay(t = 5) {
-  return new Promise(function(resolve) {
-    setTimeout(function() {
-      resolve();
-    }, t);
-  });
-}
 
 
 describe('Fulfiller', function() {
@@ -24,7 +17,6 @@ describe('Fulfiller', function() {
       it('returns the same unresolved Promise', async function() {
         let x = 0;
         const f = Fulfiller(async function() {
-          await delay();
           return x++;
         });
 
@@ -55,6 +47,62 @@ describe('Fulfiller', function() {
 
 
 
+  context('Promise is resolved', function() {
+    it('allows a new Promise to be created', async function() {
+      let x = 0;
+      const f = Fulfiller(async function() {
+        return x++;
+      });
+
+
+      const p1 = f("foo");
+      const v1 = await p1;
+
+      const p2 = f("foo");
+      const v2 = await p2;
+
+      expect(p1).to.not.equal(p2);
+      expect(v1).to.equal(0);
+
+      expect(v2).to.equal(1);
+    });
+  });
+
+
+  context('Promise is rejected', function() {
+    it('allows a new Promise to be created', async function() {
+      let x = 0;
+      const f = Fulfiller(async function() {
+        throw new Error("" + (x++));
+      });
+
+
+
+      let catches = 0;
+
+      const p1 = f("foo");
+      try {
+        await p1;
+      } catch(err) {
+        expect(err.message).to.equal("0");
+        ++catches;
+      }
+
+
+      const p2 = f("foo");
+      try {
+        await p2;
+      } catch(err) {
+        expect(err.message).to.equal("1");
+        ++catches;
+      }
+
+      expect(p1).to.not.equal(p2);
+
+      // Confirm that we visited both catch statements
+      expect(catches).to.equal(2);
+    });
+  });
 
 
 });
