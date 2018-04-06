@@ -31,6 +31,18 @@ function Fulfiller(createPromise, {keyFunc = JSON.stringify} = {}) {
 }
 
 
+
+function ManyBirds(cfg) {
+  function manyBirds(target, name, descriptor) {
+    descriptor.value = Fulfiller(descriptor.value, cfg);
+  }
+
+  return manyBirds;
+}
+
+
+
+
 Object.assign(exports, {
-  Fulfiller,
+  Fulfiller, ManyBirds,
 });
