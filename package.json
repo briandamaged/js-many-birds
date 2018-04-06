@@ -1,7 +1,7 @@
 {
   "name": "many-birds",
   "version": "0.8.0",
-  "description": "Kill many (figurative) birds w/ one (literal) promise resolution",
+  "description": "Kill many (figurative) birds with one (literal) return value",
   "main": "src/index.js",
   "scripts": {
     "test": "mocha --recursive ./test/unit"
